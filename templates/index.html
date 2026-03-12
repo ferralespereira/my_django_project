@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My App{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">Welcome to My Django App!</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">This is your app homepage</h5>
+                <p class="card-text">You now have a Django project with Bootstrap CSS styling.</p>
+                <p class="card-text">The Bootstrap navbar and card styling are being applied via CDN.</p>
+                <a href="/admin/" class="btn btn-primary">Go to Admin</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
