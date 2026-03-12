@@ -1,18 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - My App{% endblock %}
+{% block title %}Home - Auto Dealer{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-8 mx-auto">
-        <h1 class="mb-4">Welcome to My Django App!</h1>
+        <h1 class="mb-4">Welcome to Auto Dealer</h1>
         
-        <div class="card">
+        <div class="card border-primary mb-3">
             <div class="card-body">
-                <h5 class="card-title">This is your app homepage</h5>
-                <p class="card-text">You now have a Django project with Bootstrap CSS styling.</p>
-                <p class="card-text">The Bootstrap navbar and card styling are being applied via CDN.</p>
-                <a href="/admin/" class="btn btn-primary">Go to Admin</a>
+                <h5 class="card-title">Manage Your Inventory</h5>
+                <p class="card-text">Welcome to your Auto Dealer management system. Manage your vehicle inventory with ease.</p>
+                <a href="{% url 'myapp:auto-list' %}" class="btn btn-primary">View Inventory</a>
+                <a href="{% url 'myapp:auto-create' %}" class="btn btn-success">Add New Auto</a>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Admin Panel</h6>
+                        <p class="card-text">Manage users and permissions</p>
+                        <a href="/admin/" class="btn btn-secondary btn-sm">Go to Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Auto Inventory</h6>
+                        <p class="card-text">View and manage all vehicles</p>
+                        <a href="{% url 'myapp:auto-list' %}" class="btn btn-primary btn-sm">View Inventory</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
