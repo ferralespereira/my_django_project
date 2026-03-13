@@ -31,4 +31,27 @@ jobs:
             set -e
 
             cd /var/www/html/my_django_project
-            git pull origin main --ff-only
+
+            # Force working tree to match remote main to avoid deploy blocks
+            # caused by local edits on the server.
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
+
+            if [ -f "venv/bin/activate" ]; then
+              . venv/bin/activate
+            elif [ -f ".venv/bin/activate" ]; then
+              . .venv/bin/activate
+            else
+              echo "No virtual environment found (venv/.venv)."
+              exit 1
+            fi
+
+            pip install -r requirements.txt
+            python manage.py migrate --noinput
+            python manage.py collectstatic --noinput
+
+            if [ -n "$EC2_SERVICE_NAME" ]; then
+              sudo systemctl restart "$EC2_SERVICE_NAME"
+              sudo systemctl is-active "$EC2_SERVICE_NAME" --quiet
+            fi
