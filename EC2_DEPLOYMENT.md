@@ -85,3 +85,30 @@ For production, set up:
 - Systemd service (auto-restart)
 
 Check `DEPLOYMENT.md` for full setup.
+
+## GitHub Actions Auto Deploy To EC2
+
+This repository includes `.github/workflows/deploy-ec2.yml` to deploy automatically on every push to `main`.
+
+### Required repository secrets
+
+Go to GitHub: `Settings -> Secrets and variables -> Actions -> New repository secret`
+
+- `EC2_HOST`: Your EC2 public IP or domain
+- `EC2_USER`: SSH user (usually `ubuntu`)
+- `EC2_SSH_KEY`: Full private key content used to SSH into EC2
+- `EC2_PORT`: SSH port (usually `22`)
+- `EC2_SERVICE_NAME` (optional): systemd service to restart (example: `gunicorn`)
+
+### Deployment behavior
+
+On each push to `main`, the workflow will:
+
+1. Connect to EC2 via SSH
+2. Go to `/var/www/html/my_django_project`
+3. Pull latest code with `git pull origin main --ff-only`
+4. Activate `venv` or `.venv`
+5. Install/update dependencies
+6. Run migrations
+7. Run `collectstatic`
+8. Restart the service if `EC2_SERVICE_NAME` is provided
