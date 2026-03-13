@@ -15,9 +15,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from the project root explicitly.
+# Override inherited process environment values so Apache uses this app's .env.
+load_dotenv(BASE_DIR / '.env', override=True)
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,11 +34,26 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = [
+default_allowed_hosts = [
+    'localhost',
+    '127.0.0.1',
+    'django.javierfolder.com',
+]
+configured_allowed_hosts = [
     host.strip()
-    for host in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    for host in os.environ.get('ALLOWED_HOSTS', '').split(',')
     if host.strip()
 ]
+ALLOWED_HOSTS = list(dict.fromkeys(default_allowed_hosts + configured_allowed_hosts))
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
+
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 
 # Application definition
