@@ -51,7 +51,5 @@ jobs:
             python manage.py migrate --noinput
             python manage.py collectstatic --noinput
 
-            if [ -n "$EC2_SERVICE_NAME" ]; then
-              sudo systemctl restart "$EC2_SERVICE_NAME"
-              sudo systemctl is-active "$EC2_SERVICE_NAME" --quiet
-            fi
+            sudo systemctl restart apache2
+            sudo systemctl is-active apache2 --quiet
